@@ -32,7 +32,6 @@ public class TransactionSchedule {
     private final PaymentService paymentService;
     
     @Scheduled(fixedRateString = "${transaction.processing.interval:2000}")
-    @Value("${payment.gateway.url}")
     public void processTransactions() {
         log.info("Starting scheduled transaction processing");
       
