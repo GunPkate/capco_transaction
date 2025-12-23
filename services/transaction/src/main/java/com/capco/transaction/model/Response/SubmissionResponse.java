@@ -1,4 +1,4 @@
-package com.capco.transaction.model;
+package com.capco.transaction.model.Response;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -14,10 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionResponse {
-    private String id;
-    private String transactionId;
-    private BigDecimal amount;
-    private String currency;
-    private String payee;
+public class SubmissionResponse {
+    private String status;
+    private String processedAt;
 }

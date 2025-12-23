@@ -2,7 +2,7 @@ package com.capco.transaction.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capco.transaction.model.TransactionResponse;
+import com.capco.transaction.model.Response.TransactionResponse;
 import com.capco.transaction.model.entity.Transaction;
 import com.capco.transaction.model.entity.Transaction.TransactionStatus;
 import com.capco.transaction.model.submit.TransactionRequest;

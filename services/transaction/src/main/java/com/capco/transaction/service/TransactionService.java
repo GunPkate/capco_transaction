@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.capco.transaction.model.Response.TransactionResponse;
 import com.capco.transaction.model.entity.Transaction;
 import com.capco.transaction.model.entity.Transaction.TransactionStatus;
-import com.capco.transaction.model.TransactionResponse;
 import com.capco.transaction.model.submit.TransactionRequest;
 import com.capco.transaction.repo.TransactionRepository;
 
