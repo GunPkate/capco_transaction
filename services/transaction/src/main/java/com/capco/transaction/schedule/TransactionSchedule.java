@@ -17,6 +17,7 @@ import com.capco.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Component
@@ -58,19 +59,22 @@ public class TransactionSchedule {
         log.info("Marked {} transactions as PROCESSING", transactionIds.size());
 
 
-        List<SubmissionResponse> result = pendingTransactions.parallelStream()
+        List<CompletableFuture<SubmissionResponse>> futures = pendingTransactions.stream()
         .map(t -> {
-            try {
-                log.info("transactions payment PROCESSING {}", t.getTransactionId());
-                return this.paymentService.paymentSubmit(restClient, convertData(t), transactionProcessorService);
-            } catch (Exception e) {
-                log.error("transactions PROCESSING error {}", t.getTransactionId());
-                throw new RuntimeException(e);
-            }
+            log.info("Starting payment processing for transaction: {}", t.getTransactionId());
+            return this.paymentService.paymentSubmit( restClient,  convertData(t),  transactionProcessorService);
         })
         .toList();
+ 
+        CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
 
-        log.info("Submission result: {} ", result.size());
+        List<SubmissionResponse> results = allFutures.thenApply(v -> 
+        futures.stream()
+            .map(CompletableFuture::join)
+            .toList()
+        ).join(); 
+
+        log.info("Submission result: {} ", results.size());
 
         logProcessingStats();
     }

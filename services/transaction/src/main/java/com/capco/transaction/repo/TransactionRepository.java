@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.capco.transaction.model.entity.Transaction;
 import com.capco.transaction.model.entity.Transaction.TransactionStatus;
@@ -19,7 +20,8 @@ public interface TransactionRepository extends JpaRepository<Transaction,String>
     List<Transaction> findAllByStatusIn(List<TransactionStatus> statuses);
 
     @Modifying
-    @Query(value = "UPDATE transactions SET status=:status WHERE id=:transactionId", nativeQuery = true)
+    @Transactional
+    @Query(value = "UPDATE transactions SET status=:status WHERE transaction_id=:transactionId", nativeQuery = true)
     int updateStatusValueById(@Param("status") String status, @Param("transactionId") String transactionId);
 
     int countByStatus(TransactionStatus status);
