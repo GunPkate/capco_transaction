@@ -1,7 +1,6 @@
 package com.capco.transaction.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +45,8 @@ public class TransactionService {
         return "Transaction saved: "+ saved.getId();
     }
 
-    public Optional<Transaction> getAllPending() {
-        return transactionRepository.findByStatusIn(List.of(
+    public List<Transaction> getAllPending() {
+        return transactionRepository.findAllByStatusIn(List.of(
             TransactionStatus.PENDING,
             TransactionStatus.PROCESSING
     ));

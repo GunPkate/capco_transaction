@@ -35,7 +35,7 @@ public class TransactionSchedule {
     public void processTransactions() {
         log.info("Starting scheduled transaction processing");
       
-        List<Transaction> pendingTransactions = transactionRepository.findByStatusIn(List.of(
+        List<Transaction> pendingTransactions = transactionRepository.findAllByStatusIn(List.of(
             TransactionStatus.PENDING,
             TransactionStatus.PROCESSING
         )).stream().toList();
@@ -61,7 +61,7 @@ public class TransactionSchedule {
         List<SubmissionResponse> result = pendingTransactions.parallelStream()
         .map(t -> {
             try {
-                log.info("transactions PROCESSING {}", t.getTransactionId());
+                log.info("transactions payment PROCESSING {}", t.getTransactionId());
                 return this.paymentService.paymentSubmit(restClient, convertData(t));
             } catch (Exception e) {
                 log.error("transactions PROCESSING error {}", t.getTransactionId());

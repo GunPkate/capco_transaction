@@ -9,7 +9,7 @@ import com.capco.transaction.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,8 +28,8 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @RequestMapping(path = "/transaction", method=RequestMethod.GET)
-    public Optional<Transaction> getTransaction() {
-        Optional<Transaction>  result= transactionService.getAllPending();
+    public List<Transaction> getTransaction() {
+        List<Transaction>  result= transactionService.getAllPending();
         return result;
     }
 

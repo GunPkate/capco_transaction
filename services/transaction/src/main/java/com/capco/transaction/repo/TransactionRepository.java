@@ -9,14 +9,14 @@ import com.capco.transaction.model.entity.Transaction;
 import com.capco.transaction.model.entity.Transaction.TransactionStatus;
 
 import java.util.List;
-import java.util.Optional;
+
 
 
 public interface TransactionRepository extends CrudRepository<Transaction,String> {
 
     Transaction findByTransactionId(String transactionId);
 
-    Optional<Transaction> findByStatusIn(List<TransactionStatus> statuses);
+    List<Transaction> findAllByStatusIn(List<TransactionStatus> statuses);
 
     @Modifying
     @Query(value = "UPDATE transactions SET status = 'PROCESSING' WHERE id=:transactionId", nativeQuery = true)
