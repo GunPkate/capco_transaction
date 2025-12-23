@@ -22,5 +22,6 @@ public interface TransactionRepository extends CrudRepository<Transaction,String
     @Query(value = "UPDATE transactions SET status = 'PROCESSING' WHERE id=:transactionId", nativeQuery = true)
     int updateStatusToProcessing(@Param("transactionId") String transactionId);
 
+    int countByStatus(TransactionStatus status);
     
 }

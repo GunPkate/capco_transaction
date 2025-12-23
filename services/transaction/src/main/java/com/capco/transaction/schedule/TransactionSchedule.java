@@ -37,7 +37,8 @@ public class TransactionSchedule {
       
         List<Transaction> pendingTransactions = transactionRepository.findAllByStatusIn(List.of(
             TransactionStatus.PENDING,
-            TransactionStatus.PROCESSING
+            TransactionStatus.PROCESSING,
+            TransactionStatus.FAILED
         )).stream().toList();
         
      
@@ -71,6 +72,8 @@ public class TransactionSchedule {
         .toList();
 
         log.info("Submission result: {} ", result.size());
+
+        logProcessingStats();
     }
 
     public SubmissionRequest convertData(Transaction transaction){
@@ -80,6 +83,16 @@ public class TransactionSchedule {
                 .currency(transaction.getCurrency())
                 .payee(transaction.getPayee())
                 .build();
+    }
+
+    private void logProcessingStats() {
+        int pending = transactionRepository.countByStatus(TransactionStatus.PENDING);
+        int processing = transactionRepository.countByStatus(TransactionStatus.PROCESSING);
+        int processed = transactionRepository.countByStatus(TransactionStatus.PROCESSED);
+        int failed = transactionRepository.countByStatus(TransactionStatus.FAILED);
+        
+        log.info("Transaction stats - Pending: {}, Processing: {}, Processed: {}, Failed: {}", 
+                pending, processing, processed, failed);
     }
 
 }
