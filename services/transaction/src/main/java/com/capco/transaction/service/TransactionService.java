@@ -54,4 +54,16 @@ public class TransactionService {
     ));
     }
 
+    public static class DuplicateTransactionException extends RuntimeException {
+        public DuplicateTransactionException(String message) {
+            super(message);
+        }
+    }
+    
+    public static class TransactionNotFoundException extends RuntimeException {
+        public TransactionNotFoundException(String message) {
+            super(message);
+        }
+    }
+
 }
