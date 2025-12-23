@@ -11,6 +11,7 @@ import com.capco.transaction.model.entity.Transaction;
 import com.capco.transaction.model.entity.Transaction.TransactionStatus;
 import com.capco.transaction.model.submit.SubmissionRequest;
 import com.capco.transaction.repo.TransactionRepository;
+import com.capco.transaction.service.PaymentService;
 import com.capco.transaction.service.TransactionProcessorService;
 import com.capco.transaction.service.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +32,7 @@ public class TransactionSchedule {
     private final TransactionService transactionService;
     private final TransactionProcessorService transactionProcessorService;
     private final RestClient restClient;
+    private final PaymentService paymentService;
     
     @Scheduled(fixedRateString = "${transaction.processing.interval:2000}")
     @Value("${payment.gateway.url}")
@@ -74,21 +76,7 @@ public class TransactionSchedule {
 
 
         log.info("Submission result: ", request.getTransactionId() , request.getCurrency());
-        SubmissionResponse result = this.restClient.post()
-                    .uri("/payments/submit")
-                    .body(request)
-                    .retrieve()
-                    .onStatus(status -> status.value() >= 400, (req, res) -> {
-                        try {
-                            throw new Exception(
-                                "Payment gateway returned status: " + res.getStatusCode()
-                            );
-                        } catch (Exception e) {
-  
-                            e.printStackTrace();
-                        }
-                    })
-                    .body(SubmissionResponse.class);
+        SubmissionResponse result = this.paymentService.paymentSubmit(restClient, request);
 
         log.info("Submission result: {} {}", result.getStatus() , result.getProcessedAt());
     }
