@@ -5,14 +5,21 @@ import com.capco.transaction.model.submit.SubmissionRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
 public class PaymentService {
-
+    @Retryable(
+        retryFor = { RestClientException.class }, 
+        maxAttempts = 3, 
+        backoff = @Backoff(delay = 1000, multiplier = 2.0)
+    )
     public CompletableFuture<SubmissionResponse> paymentSubmit(RestClient restClient, SubmissionRequest request, TransactionProcessorService t) {
         return CompletableFuture.supplyAsync(() -> {
             try {

@@ -31,7 +31,7 @@ public class TransactionSchedule {
     private final RestClient restClient;
     private final PaymentService paymentService;
     
-    @Scheduled(fixedRateString = "${transaction.processing.interval:2000}")
+    @Scheduled(fixedRateString = "${transaction.processing.interval}")
     public void processTransactions() {
         log.info("Starting scheduled transaction processing");
       
