@@ -1,8 +1,8 @@
 package com.capco.transaction.repo;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.capco.transaction.model.entity.Transaction;
@@ -12,15 +12,15 @@ import java.util.List;
 
 
 
-public interface TransactionRepository extends CrudRepository<Transaction,String> {
+public interface TransactionRepository extends JpaRepository<Transaction,String> {
 
     Transaction findByTransactionId(String transactionId);
 
     List<Transaction> findAllByStatusIn(List<TransactionStatus> statuses);
 
     @Modifying
-    @Query(value = "UPDATE transactions SET status = 'PROCESSING' WHERE id=:transactionId", nativeQuery = true)
-    int updateStatusToProcessing(@Param("transactionId") String transactionId);
+    @Query(value = "UPDATE transactions SET status=:status WHERE id=:transactionId", nativeQuery = true)
+    int updateStatusValueById(@Param("status") String status, @Param("transactionId") String transactionId);
 
     int countByStatus(TransactionStatus status);
     

@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 public class TransactionSchedule {
     
     private final TransactionRepository transactionRepository;
-    private final TransactionService transactionService;
     private final TransactionProcessorService transactionProcessorService;
     private final RestClient restClient;
     private final PaymentService paymentService;
@@ -63,7 +62,7 @@ public class TransactionSchedule {
         .map(t -> {
             try {
                 log.info("transactions payment PROCESSING {}", t.getTransactionId());
-                return this.paymentService.paymentSubmit(restClient, convertData(t));
+                return this.paymentService.paymentSubmit(restClient, convertData(t), transactionProcessorService);
             } catch (Exception e) {
                 log.error("transactions PROCESSING error {}", t.getTransactionId());
                 throw new RuntimeException(e);
