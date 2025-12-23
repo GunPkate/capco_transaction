@@ -14,13 +14,10 @@ import com.capco.transaction.repo.TransactionRepository;
 import com.capco.transaction.service.PaymentService;
 import com.capco.transaction.service.TransactionProcessorService;
 import com.capco.transaction.service.TransactionService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.concurrent.CompletableFuture;
 
 @Component
 @RequiredArgsConstructor

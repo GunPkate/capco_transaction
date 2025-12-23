@@ -2,16 +2,13 @@ package com.capco.transaction.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capco.transaction.model.Response.TransactionResponse;
 import com.capco.transaction.model.entity.Transaction;
-import com.capco.transaction.model.entity.Transaction.TransactionStatus;
 import com.capco.transaction.model.submit.TransactionRequest;
 import com.capco.transaction.service.TransactionService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
