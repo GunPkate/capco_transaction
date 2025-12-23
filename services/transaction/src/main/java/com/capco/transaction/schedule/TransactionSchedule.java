@@ -62,23 +62,28 @@ public class TransactionSchedule {
         log.info("Marked {} transactions as PROCESSING", transactionIds.size());
 
 
-        // ComputableFuture a = restClient.post(
-            
-        // );
-        // ObjectMapper.
-        SubmissionRequest request =SubmissionRequest.builder()
-                .transactionId(pendingTransactions.get(0).getTransactionId())
-                .amount(pendingTransactions.get(0).getAmount())
-                .currency(pendingTransactions.get(0).getCurrency())
-                .payee(pendingTransactions.get(0).getPayee())
+        List<SubmissionResponse> result = pendingTransactions.parallelStream()
+        .map(t -> {
+            try {
+                log.info("transactions PROCESSING {}", t.getTransactionId());
+                return this.paymentService.paymentSubmit(restClient, convertData(t));
+            } catch (Exception e) {
+                log.error("transactions PROCESSING error {}", t.getTransactionId());
+                throw new RuntimeException(e);
+            }
+        })
+        .toList();
+
+        log.info("Submission result: {} ", result.size());
+    }
+
+    public SubmissionRequest convertData(Transaction transaction){
+        return SubmissionRequest.builder()
+                .transactionId(transaction.getTransactionId())
+                .amount(transaction.getAmount())
+                .currency(transaction.getCurrency())
+                .payee(transaction.getPayee())
                 .build();
-            ;
-
-
-        log.info("Submission result: ", request.getTransactionId() , request.getCurrency());
-        SubmissionResponse result = this.paymentService.paymentSubmit(restClient, request);
-
-        log.info("Submission result: {} {}", result.getStatus() , result.getProcessedAt());
     }
 
 }
