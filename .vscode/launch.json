@@ -31,6 +31,16 @@
             "projectName": "customer",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-TransactionApplication<transaction>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.capco.transaction.TransactionApplication",
+            "projectName": "transaction",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
